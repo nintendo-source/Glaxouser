@@ -28,7 +28,7 @@ jobs:
           const { app, BrowserWindow } = require('electron');
           const path = require('path');
           function createWindow() {
-            const win = new BrowserWindow({ width: 1280, height: 800 });
+            const win = new BrowserWindow({ width: 1280, height: 800, icon: path.join(__dirname, '../assets/icon.png') });
             win.loadFile(path.join(__dirname, '../dist/index.html'));
           }
           app.whenReady().then(createWindow);
@@ -38,7 +38,7 @@ jobs:
         run: npx vite build
 
       - name: Build Portable EXE
-        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.js
+        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.js --config.win.icon=assets/icon.png
 
       - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
@@ -66,15 +66,16 @@ jobs:
       - name: Install Dependencies & Capacitor
         run: |
           npm install --legacy-peer-deps
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets
 
       - name: Build Web Dist
         run: npx vite build
 
-      - name: Sync Capacitor
+      - name: Sync & Generate Assets
         run: |
           npx cap init "Glaxouser" "com.glaxouser.browser" --web-dir "dist"
           npx cap add android
+          npx @capacitor/assets generate --android --iconAvailable assets/icon.png
           npx cap sync android
 
       - name: Build APK
