@@ -24,7 +24,7 @@ jobs:
         shell: powershell
         run: |
           if (!(Test-Path -Path "electron")) { New-Item -ItemType Directory -Path "electron" }
-          Set-Content -Path "electron/main.js" -Value @"
+          Set-Content -Path "electron/main.cjs" -Value @"
           const { app, BrowserWindow } = require('electron');
           const path = require('path');
           function createWindow() {
@@ -38,7 +38,7 @@ jobs:
         run: npx vite build
 
       - name: Build Portable EXE
-        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.js --config.win.icon=assets/icon.png --config.portable.artifactName="Glaxouser-Browser.exe"
+        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.cjs --config.win.icon=assets/icon.png --config.portable.artifactName="Glaxouser-Browser.exe"
 
       - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
