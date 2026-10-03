@@ -1,0 +1,258 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap");
+@import "tailwindcss";
+
+@property --gx-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #3b9bff;
+}
+@property --gx-hot {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ff3d9a;
+}
+@property --gx-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #050506;
+}
+
+:root {
+  --gx-accent: #3b9bff;
+  --gx-hot: #ff3d9a;
+  --gx-bg: #050506;
+  --gx-fg: #f4f4f5;
+  --gx-muted: #8a8a93;
+  --gx-surface: #101014;
+  --gx-elevated: #18181d;
+  --gx-accent-fg: #061018;
+  --gx-hot-fg: #1a0610;
+  --gx-force: 0.18;
+  --gx-border: color-mix(in oklab, var(--gx-fg) 12%, transparent);
+  --gx-border-strong: color-mix(in oklab, var(--gx-fg) 22%, transparent);
+  --shadow-border: 0 0 0 1px color-mix(in oklab, var(--gx-fg) 10%, transparent);
+  --shadow-border-hover: 0 0 0 1px color-mix(in oklab, var(--gx-fg) 16%, transparent);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --motion-stagger: 40ms;
+  --motion-micro: 80ms;
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+  --motion-medium: 350ms;
+  --motion-slow: 400ms;
+  --motion-emphasis: 500ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: ease-in-out;
+}
+
+@theme {
+  --color-gx-accent: var(--gx-accent);
+  --color-gx-hot: var(--gx-hot);
+  --color-gx-bg: var(--gx-bg);
+  --color-gx-fg: var(--gx-fg);
+  --color-gx-muted: var(--gx-muted);
+  --color-gx-surface: var(--gx-surface);
+  --color-gx-elevated: var(--gx-elevated);
+  --color-gx-accent-fg: var(--gx-accent-fg);
+  --color-gx-hot-fg: var(--gx-hot-fg);
+  --color-gx-border: var(--gx-border);
+  --color-gx-accent-soft: color-mix(in oklab, var(--gx-accent) 16%, transparent);
+  --color-gx-accent-mid: color-mix(in oklab, var(--gx-accent) 28%, transparent);
+  --color-gx-hot-soft: color-mix(in oklab, var(--gx-hot) 16%, transparent);
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Rajdhani", "Outfit", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--gx-bg);
+    color: var(--gx-fg);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--gx-accent) 40%, transparent);
+    color: var(--gx-fg);
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.gx-noise {
+  position: relative;
+}
+
+.gx-noise::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+}
+
+.gx-force-wash {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: color-mix(in oklab, var(--gx-accent) calc(var(--gx-force) * 100%), transparent);
+  mix-blend-mode: overlay;
+}
+
+.gx-tab {
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+}
+
+@media (min-width: 768px) {
+  .gx-tab-md {
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+  }
+}
+
+.gx-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gx-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gx-accent),
+    var(--gx-hot),
+    transparent
+  );
+  animation: gx-scan-move 1.8s var(--ease-smooth-out) both;
+}
+
+@keyframes gx-scan-move {
+  from {
+    top: 12%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    top: 78%;
+    opacity: 0;
+  }
+}
+
+@keyframes gx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes gx-load {
+  from {
+    transform: scaleX(0);
+  }
+  70% {
+    transform: scaleX(0.82);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.gx-rise {
+  animation: gx-rise 500ms var(--ease-smooth-out) both;
+}
+
+.gx-stagger > * {
+  animation: gx-rise 500ms var(--ease-smooth-out) both;
+}
+.gx-stagger > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.gx-stagger > *:nth-child(2) {
+  animation-delay: 80ms;
+}
+.gx-stagger > *:nth-child(3) {
+  animation-delay: 160ms;
+}
+.gx-stagger > *:nth-child(4) {
+  animation-delay: 240ms;
+}
+.gx-stagger > *:nth-child(5) {
+  animation-delay: 320ms;
+}
+
+html[data-gx-cpu="low"] .gx-rise,
+html[data-gx-cpu="low"] .gx-stagger > *,
+html[data-gx-cpu="low"] .gx-scan::after {
+  animation-duration: 1.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gx-rise,
+  .gx-stagger > *,
+  .gx-scan::after {
+    animation: none !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--gx-fg) 16%, transparent);
+  border-radius: 99px;
+}
