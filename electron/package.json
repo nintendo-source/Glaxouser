@@ -1,5 +1,6 @@
 {
-  "name": "app-builder-workspace",
+  "main": "electron/main.js",
+  "name": "Glaxouser",
   "private": true,
   "sideEffects": false,
   "type": "module",
