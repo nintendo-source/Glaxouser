@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows-Portable-Browser
-          path: dist-electron/*.exe
+          path: '**/*.exe'
 
   build-android:
     runs-on: ubuntu-latest
