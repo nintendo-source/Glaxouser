@@ -13,19 +13,32 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install Dependencies
-        run: |
-          npm install
-          npm install --save-dev electron electron-builder
+        run: npm install --legacy-peer-deps
 
-      - name: Build Web & Portable EXE
+      - name: Ensure Electron Main File
+        shell: powershell
         run: |
-          npx vite build
-          npx electron-builder --win portable
+          if (!(Test-Path -Path "electron")) { New-Item -ItemType Directory -Path "electron" }
+          Set-Content -Path "electron/main.js" -Value @"
+          const { app, BrowserWindow } = require('electron');
+          const path = require('path');
+          function createWindow() {
+            const win = new BrowserWindow({ width: 1280, height: 800 });
+            win.loadFile(path.join(__dirname, '../dist/index.html'));
+          }
+          app.whenReady().then(createWindow);
+          "@
+
+      - name: Build Web Dist
+        run: npx vite build
+
+      - name: Build Portable EXE
+        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.js
 
       - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
@@ -40,25 +53,27 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Install Capacitor & Dependencies
+      - name: Install Dependencies & Capacitor
         run: |
-          npm install
+          npm install --legacy-peer-deps
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Build Web App & Sync Android
+      - name: Build Web Dist
+        run: npx vite build
+
+      - name: Sync Capacitor
         run: |
-          npx vite build
-          npx cap init "MyBrowser" "com.mycompany.browser" --web-dir "dist"
+          npx cap init "Glaxouser" "com.glaxouser.browser" --web-dir "dist"
           npx cap add android
           npx cap sync android
 
