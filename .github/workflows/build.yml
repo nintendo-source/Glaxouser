@@ -38,13 +38,13 @@ jobs:
         run: npx vite build
 
       - name: Build Portable EXE
-        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.js --config.win.icon=assets/icon.png
+        run: npx electron-builder --win portable --config.extraMetadata.main=electron/main.js --config.win.icon=assets/icon.png --config.portable.artifactName="Glaxouser-Browser.exe"
 
       - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
         with:
           name: Windows-Portable-Browser
-          path: '**/*.exe'
+          path: dist/Glaxouser-Browser.exe
 
   build-android:
     runs-on: ubuntu-latest
