@@ -75,7 +75,7 @@ jobs:
         run: |
           npx cap init "Glaxouser" "com.glaxouser.browser" --web-dir "dist"
           npx cap add android
-          npx @capacitor/assets generate --android --iconAvailable assets/icon.png
+          if [ -f "assets/icon.png" ]; then npx @capacitor/assets generate --android; fi
           npx cap sync android
 
       - name: Build APK
