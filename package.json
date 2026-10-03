@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Glaxouser Custom Browser",
   "author": "Glax Studio",
-  "main": "electron/main.js",
+  "main": "electron/main.cjs",
   "private": true,
   "sideEffects": false,
   "type": "module",
